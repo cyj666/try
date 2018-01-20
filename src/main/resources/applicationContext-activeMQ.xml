@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://activemq.apache.org/schema/core
+    http://activemq.apache.org/schema/core/activemq-core-5.12.1.xsd">
+
+
+
+	<!--创建连接工厂 -->
+	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="tcp://localhost:61616"></property>
+	</bean>
+
+	<!-- 通过往PooledConnectionFactory注入一个ActiveMQConnectionFactory可以用来将Connection， 
+		Session和MessageProducer池化这样可以大大减少我们的资源消耗， -->
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+		<property name="connectionFactory" ref="targetConnectionFactory" />
+		<property name="maxConnections" value="10" />
+	</bean>
+
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="pooledConnectionFactory" />
+	</bean>
+
+	<!-- 设置 消息目的地 start -->
+	<!-- 配置JMS模板（Queue），Spring提供的JMS工具类，它发送、接收消息。 -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory"></property>
+	<!--	<property name="defaultDestination" ref="destinationOne"></property> -->
+		<property name="receiveTimeout" value="6000"></property>
+		<!-- true是topic，false是queue，默认是false，此处显示写出false -->
+		<property name="pubSubDomain" value="false" />
+	</bean>
+	<!-- 设置 消息目的地 end -->
+
+
+
+	<!-- 声明ActiveMQ消息目标,目标可以是一个队列，也可以是一个主题ActiveMQTopic -->
+	<!-- <bean id="destinationOne" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="testQueOne"></constructor-arg>
+	</bean>-->
+
+	<!-- 在真正利用JmsTemplate进行消息发送的时候，我们需要知道消息发送的目的地，即destination。 在Jms中有一个用来表示目的地的Destination接口，它里面没有任何方法定义，只是用来做一个标识而已。 
+		当我们在使用JmsTemplate进行消息发送时没有指定destination的时候将使用默认的Destination。 默认Destination可以通过在定义jmsTemplate 
+		bean对象时通过属性defaultDestination或defaultDestinationName来进行注入， defaultDestinationName对应的就是一个普通字符串 -->
+	<!--这个是队列目的地，点对点的 -->
+	<bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg>
+			<value>NTF_MOCK_INPUT</value>
+		</constructor-arg>
+	</bean>
+	<!--这个是回复队列，点对点的 -->
+	<bean id="responseQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg>
+			<value>NTF_MOCK_OUTPUT</value>
+		</constructor-arg>
+	</bean>
+
+
+
+	<!-- 配置生产者 start -->
+	<!--<bean id="senderOne" class="com.dly.avtivemqtest.SenderOne">
+		<property name="jmsTemplateOne" ref="jmsTemplateOne"></property>
+	</bean>-->
+	<!-- 配置生产者 end -->
+
+	<!-- 配置消费者 start -->
+	<!--<bean id="receiverOne" class="com.dly.avtivemqtest.ReceiverOne">
+		 <property name="jmsTemplate" ref="jmsTemplate"></property> 
+	</bean>-->
+	<!-- 配置消费者 end -->
+
+	<!-- 消息监听器 -->
+	<!--<bean id="consumerMessageListenerOfOne" class="com.dly.avtivemqtest.ReceiverOne" />-->
+
+
+
+	<!-- 消息监听容器 消息接收监听器用于异步接收消息 -->
+	<!--<bean id="jmsContainerOne"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="destination" ref="destinationOne" />
+		<property name="messageListener" ref="consumerServicer" />
+	</bean>-->
+</beans>
