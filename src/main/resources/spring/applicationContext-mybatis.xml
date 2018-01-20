@@ -28,7 +28,7 @@
 	<!-- 定义mapper扫描器 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<!-- 扫描mapper包 -->
-		<property name="basePackage" value="com.try.mapper"></property>
+		<property name="basePackage" value="com.tryall.mapper"></property>
 	</bean>	
 </beans>
 
