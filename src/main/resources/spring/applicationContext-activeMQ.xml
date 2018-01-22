@@ -10,30 +10,35 @@
 
 
 	<!--创建连接工厂 -->
-	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" >
 		<property name="brokerURL" value="tcp://localhost:61616"></property>
+		<property name="userName" value="admin" />  
+        <property name="password" value="admin" /> 
+        <!-- 是否异步发送消息 -->  
+         <property name="useAsyncSend" value="true" />  
+        <property name="alwaysSessionAsync" value="false" />   
 	</bean>
 
 	<!-- 通过往PooledConnectionFactory注入一个ActiveMQConnectionFactory可以用来将Connection， 
 		Session和MessageProducer池化这样可以大大减少我们的资源消耗， -->
-	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
 		<property name="connectionFactory" ref="targetConnectionFactory" />
-		<property name="maxConnections" value="10" />
-	</bean>
+		<property name="maxConnections" value="100" />
+	</bean> 
 
 	<bean id="connectionFactory"
 		class="org.springframework.jms.connection.SingleConnectionFactory">
 		<property name="targetConnectionFactory" ref="pooledConnectionFactory" />
-	</bean>
+	</bean> 
 
 	<!-- 设置 消息目的地 start -->
 	<!-- 配置JMS模板（Queue），Spring提供的JMS工具类，它发送、接收消息。 -->
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory"></property>
-	<!--	<property name="defaultDestination" ref="destinationOne"></property> -->
+		<property name="connectionFactory" ref="targetConnectionFactory"></property>
+		<property name="defaultDestination" ref="queueDestination"></property>
 		<property name="receiveTimeout" value="6000"></property>
 		<!-- true是topic，false是queue，默认是false，此处显示写出false -->
-		<property name="pubSubDomain" value="false" />
+		<property name="pubSubDomain" value="false" />		 
 	</bean>
 	<!-- 设置 消息目的地 end -->
 
@@ -63,14 +68,14 @@
 
 
 	<!-- 配置生产者 start -->
-	<!--<bean id="senderOne" class="com.dly.avtivemqtest.SenderOne">
-		<property name="jmsTemplateOne" ref="jmsTemplateOne"></property>
+	<!--<bean id="producerService" class="com.tryall.service.ProducerService">
+		<property name="jmsTemplate" ref="jmsTemplate"></property>
 	</bean>-->
 	<!-- 配置生产者 end -->
 
 	<!-- 配置消费者 start -->
-	<!--<bean id="receiverOne" class="com.dly.avtivemqtest.ReceiverOne">
-		 <property name="jmsTemplate" ref="jmsTemplate"></property> 
+	<!--<bean id="consumerService" class="com.tryall.service.ConsumerService">
+		 <property name="jmsTemplate" ref="jmsTemplate"></property>
 	</bean>-->
 	<!-- 配置消费者 end -->
 

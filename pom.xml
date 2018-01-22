@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com</groupId>
-  <artifactId>tryall</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>try Maven Webapp</name>
-  <url>http://maven.apache.org</url>
- <!-- 集中定义依赖版本号 -->
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com</groupId>
+	<artifactId>tryall</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>try Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<!-- 集中定义依赖版本号 -->
 	<properties>
 		<shiro.version>1.3.2</shiro.version>
 
@@ -36,23 +36,44 @@
 
 
 	<dependencies>
-	
+
 		<!-- activemq -->
-		<!--<dependency>
+		<dependency>
 			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-all</artifactId>
-			<version>5.15.2</version>
-		</dependency>-->
+			<artifactId>activemq-broker</artifactId>
+			<version>5.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-pool</artifactId>
+			<version>5.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-client</artifactId>
+			<version>5.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-spring</artifactId>
+			<version>5.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-core</artifactId>
+			<version>5.7.0</version>
+		</dependency>
+
 
 
 		<!-- comet4J(Java长轮询) -->
-		<!--<dependency>
-			<groupId>comet4j-tomcat7</groupId>
-			<artifactId>test</artifactId>
+		<dependency>
+		 	<groupId>comet4j-tomcat7</groupId> 
+		 	<artifactId>test</artifactId> 
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/comet4j-tomcat7.jar</systemPath>
-		</dependency>-->
+			<scope>system</scope> 
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/comet4j-tomcat7.jar</systemPath> 
+		</dependency>
 
 
 		<!-- poi(操作excel等) -->
@@ -144,6 +165,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
@@ -316,6 +342,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		
+
 	</build>
 </project>

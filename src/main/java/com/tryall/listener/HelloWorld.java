@@ -6,12 +6,12 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletRequest;
 
-/*import org.comet4j.core.CometConnection;
+import org.comet4j.core.CometConnection;
 import org.comet4j.core.CometContext;
 import org.comet4j.core.CometEngine;
 import org.comet4j.core.event.ConnectEvent;
 import org.comet4j.core.listener.ConnectListener;
-import org.springframework.http.HttpRequest;*/
+import org.springframework.http.HttpRequest;
 
 
 public class HelloWorld  implements ServletContextListener {
@@ -29,22 +29,22 @@ public class HelloWorld  implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent arg0) {
     		// CometContext ： Comet4J上下文，负责初始化配置、引擎对象、连接器对象、消息缓存等。
-           /* CometContext cc = CometContext.getInstance();*/
+            CometContext cc = CometContext.getInstance();
             // 注册频道，即标识哪些字段可用当成频道，用来作为向前台传送数据的“通道”
-           // cc.registChannel(CHANNEL);//注册应用的channel
-           // cc.registChannel(CHANNEL2);//注册应用的channel2
-           // Thread helloAppModule = new Thread(new HelloAppModule(), "Sender App Module");
+            cc.registChannel(CHANNEL);//注册应用的channel
+            cc.registChannel(CHANNEL2);//注册应用的channel2
+            Thread helloAppModule = new Thread(new HelloAppModule(), "Sender App Module");
             // 下面的内部类的方法是个死循环，设置helloAppModule线程为“守护线程”，则当jvm只剩“守护线程”时(主线程结束)，该线程也会结束
-           // helloAppModule.setDaemon(true);
+            helloAppModule.setDaemon(true);
             // 开始线程
-            //helloAppModule.start();
+            helloAppModule.start();
             
             
     }
     
     
     
-  /*  class JoinListener extends ConnectListener{
+    class JoinListener extends ConnectListener{
 
 		@Override
 		public boolean handleEvent(ConnectEvent arg0) {
@@ -54,12 +54,12 @@ public class HelloWorld  implements ServletContextListener {
 			return false;
 		}
     	
-    }*/
+    }
 
     
     
     
-   /* class HelloAppModule implements Runnable {
+    class HelloAppModule implements Runnable {
     	public SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
             public void run() {           	
                     while (true) {
@@ -86,11 +86,11 @@ public class HelloWorld  implements ServletContextListener {
         //engine.sendToAll(CHANNEL, Runtime.getRuntime().freeMemory()/1024);
         engine.addConnectListener(new JoinListener());
         engine.sendToAll(CHANNEL, msg);
-        /*Thread helloAppModule = new Thread(new HelloAppModule(), "Sender App Module");
+        Thread helloAppModule = new Thread(new HelloAppModule(), "Sender App Module");
         helloAppModule.setDaemon(true);
         // 开始线程
-        helloAppModule.start();*/
-   // }
+        helloAppModule.start();
+    }
     
    /* public void test2(String msg,HttpServletRequest request) {
     	CometEngine engine = CometContext.getInstance().getEngine();

@@ -49,6 +49,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.tryall.listener.HelloWorld;
@@ -175,14 +176,14 @@ public class UserController {
 	
 	
 	@RequestMapping(value="/register.do",method=RequestMethod.POST)
-	public String register(Model model,@RequestParam(name="username",required=true)String username,
+	public String register(Model model,@RequestParam(value="username",required=true)String username,
 			@RequestParam(value="password",required=true)String password)throws Exception {
 		userService.addUser(username, password);
 		return "login";
 	}
 	
 	@RequestMapping(value="/getUserById",method=RequestMethod.GET)
-	public String getUserById(@RequestParam(name="userId",required=false)int id,Model model,
+	public String getUserById(@RequestParam(value="userId",required=false)int id,Model model,
 			ServletRequest request,ServletResponse response) throws ServletException, IOException {
 		User user = userService.getUser(id);
 		model.addAttribute("user", user);
@@ -193,13 +194,14 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/test",method=RequestMethod.GET)
-	public void test(Model model,@RequestParam(name="value",required=true)String value,
+	@ResponseBody
+	public void test(Model model,@RequestParam(value="value",required=true)String value,
 			HttpServletRequest request)throws Exception {
 		/*HttpSession session = request.getSession();
 		if (session.getAttribute("sessionId")==null) {
 			session.setAttribute("sessionId", session.getId());
 		}*/
-		//new HelloWorld().test(value);
+		new HelloWorld().test(value);
 		//producerService.sendMessage(receiveQueue, "my name is cyj!"); 
 	}
 	
