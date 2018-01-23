@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.solr.client.solrj.beans.Field;
 import org.apache.xmlbeans.impl.xb.ltgfmt.FileDesc.Role;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,8 +15,10 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 public class User implements Serializable{
 
+	@Field("id")
 	private int userId;
 	
+	@Field("name")
 	@NotBlank(message="不能为空")
 	private String username;
 	

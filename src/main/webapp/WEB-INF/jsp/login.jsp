@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath }"></c:set>
-
+<link rel="stylesheet" href="${ctx}/static/css/login.css">
 <link rel="stylesheet"
 	href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
 <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -12,106 +12,77 @@
 	src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script
 	src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
-<link rel="shortcut icon" href="${ctx }/static/ico/bitbug_favicon.ico">
-<style type="text/css">
-body {
-	background: url(static/img/background.jpg) no-repeat;
-	background-size: cover;
-	font-size: 16px;
-}
+<link rel="icon" href="${ctx}/static/ico/bitbug_favicon.ico" type="image/x-icon">
 
-.form {
-	background: rgba(255, 255, 255, 0.6);
-	width: 400px;
-	margin: 100px auto;
-}
-
-#login_form {
-	display: block;
-}
-
-#register_form {
-	display: none;
-}
-
-.fa {
-	display: inline-block;
-	top: 27px;
-	left: 6px;
-	position: relative;
-	color: #ccc;
-}
-
-input[type="text"], input[type="password"] {
-	padding-left: 26px;
-}
-
-.checkbox {
-	padding-left: 21px;
-}
-</style>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>欢迎来到登录界面</title>
+<title>登录</title>
 </head>
 <body>
-<shiro:user>
-欢迎<shiro:principal>登录</shiro:principal>
-</shiro:user>
-<shiro:authenticated>用户<shiro:principal/>通过验证</shiro:authenticated>
-<shiro:notAuthenticated>未通过验证</shiro:notAuthenticated>
-<shiro:hasRole name="admin"> 拥有角色admin</shiro:hasRole> 
-<shiro:lacksRole name="admin"> 没有角色admin </shiro:lacksRole>
-<shiro:hasPermission name="insert"> 拥有权限inert  </shiro:hasPermission>
-<shiro:lacksPermission name="insert"> 没有权限insert  </shiro:lacksPermission>
-
-	<div class="container">
-		<div class="form row">
-			<form class="form-horizontal col-sm-offset-3 col-md-offset-3"
-				id="login_form" action="/login" method="POST">
-				<h3 class="form-title">Login to your account</h3>
-				<small><span class="text-danger">${message}</span></small>
-				<span class="text-warning">当前在线人数：${sesessionCount}</span>
-				<span class="text-warning">最近登录时间：${lastTime}</span>
-				<h1 class="text_danger">${user}</h1>
-				<div class="col-sm-9 col-md-9">
-					<div class="form-group">
-						<i class="fa fa-user fa-lg"><span
-							class="glyphicon glyphicon-user"></span></i> <input
-							class="form-control required" type="text" placeholder="账号"
-							name="account" autofocus="autofocus" maxlength="20" required />
-					</div>
-					<div class="form-group">
-						<i class="fa fa-lock fa-lg"><span
-							class="glyphicon glyphicon-lock"></span></i> <input
-							class="form-control required" type="password" placeholder="密码"
-							name="password" maxlength="8" required />
-					</div>
-					<div class="form-group">
-						 <input class="form-control required" type="text" id="captcha" placeholder="验证码"
-							name="captcha" class="text" maxlength="5" style="width: 100px; display:inline" required/><img
-							id="captchaImage" src="captcha.form" />
-					</div>
-					<div class="form-group">
-						<label class="checkbox"> <input type="checkbox"
-							name="remember" value="1" /><small> 记住我</small>
-						</label>						
-						<a href="/register" id="register_btn" class=""><small>没有账号？点击注册</small></a>
-					</div>
-					<div class="form-group">					
-						<input type="submit" class="btn btn-success"
-							value="登录 " />
-							<input type="reset" class="btn btn-success "
-							value="重置 " />
-					</div>
-				</div>
-			</form>
-		</div>
+<!-- 代码 开始 -->
+<div id="login">
+    <div class="wrapper">
+        <div class="login">
+            <form action="login" method="post" class="container offset1 loginform">
+                <div id="owl-login">
+                    <div class="hand"></div>
+                    <div class="hand hand-r"></div>
+                    <div class="arms">
+                        <div class="arm"></div>
+                        <div class="arm arm-r"></div>
+                    </div>
+                </div>
+                <div class="pad">
+                <h5 class="text-danger">${message}</h5>
+                    <input type="hidden" name="_csrf" value="9IAtUxV2CatyxHiK2LxzOsT6wtBE6h8BpzOmk=">
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="account" class="control-label fa fa-user"></label>
+                            <input id="account" type="text" name="account" placeholder="账号" tabindex="1" autofocus="autofocus" class="form-control input-medium" required>
+                        </div>
+                    </div>
+                    <!--  <div class="control-group hidden">
+                        <div class="controls">
+                            <label for="email" class="control-label fa fa-envelope"></label>
+                            <input id="email" type="email" name="email" placeholder="Email" tabindex="1" autofocus="autofocus" class="form-control input-medium" required>
+                        </div>
+                    </div>-->
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="password" class="control-label fa fa-lock"></label>
+                            <input id="password" type="password" name="password" placeholder="密码" tabindex="2" class="form-control input-medium" required>
+                        </div>
+                    </div>
+                  <!--  <div class="control-group hidden">
+                        <div class="controls">
+                            <label for="captcha" class="control-label fa fa-lock" hidden></label>
+                            <input id="captcha" type="text" name="captcha" placeholder="验证码" tabindex="2" class="form-control input-medium">
+                        </div>
+                    </div>-->
+                </div>
+                <div class="form-actions">
+                <a href="#" tabindex="5" class="btn pull-left btn-link text-muted">忘记密码?</a>
+                <a href="register" tabindex="6" class="btn btn-link text-muted">注册</a>
+                    <button type="submit" tabindex="4" class="btn btn-primary">登录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 代码 结束 -->
 </body>
 <script type="text/javascript">
+$(function() {
+
+    $('#login #password').focus(function() {
+        $('#owl-login').addClass('password');
+    }).blur(function() {
+        $('#owl-login').removeClass('password');
+    });
+});
 $('#captchaImage').click(function() 
 		{
 		  $('#captchaImage').attr("src", "captcha.form?timestamp=" + (new Date()).valueOf());

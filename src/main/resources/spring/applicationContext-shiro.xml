@@ -11,9 +11,10 @@
   
 <!-- 会话cookie模板 -->
 <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-	<constructor-arg value="sid"/>  
+ <constructor-arg name="name" value="meta.session.id"/>
+	<!--<constructor-arg value="sid"/>  
 	<property name="httpOnly" value="true"/> 
-	<property name="maxAge" value="-1"/>
+	 <property name="maxAge" value="-1"/>-->
 </bean>
 <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 	<constructor-arg value="sid"/>  

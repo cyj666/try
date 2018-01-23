@@ -40,6 +40,8 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.datetime.DateFormatter;
@@ -58,6 +60,7 @@ import com.tryall.realm.MyRealm;
 import com.tryall.realm.UserRealm;
 import com.tryall.service.UserService;
 //import com.test.activeMQ.ProducerService;
+import com.tryall.tool.SolrUtil;
 
 
 @Controller
@@ -91,24 +94,14 @@ public class UserController {
 			@RequestParam(value="captcha",required=false)String captcha,HttpSession session
 			,HttpServletRequest request,HttpServletResponse response,Model model) {
 			String msg = "";
-			System.out.println(username+"/"+password);
-			//CredentialsMatcher cm = new SimpleCredentialsMatcher();
-			//HttpSession session2 = request.getSession();
-			
+			System.out.println(username+"/"+password);		
 			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-			model.addAttribute("user", username);
-			
+			model.addAttribute("user", username);			
 			token.setHost(request.getRemoteAddr());
-			//记住我
-			token.setRememberMe(true);
-			
-			 
-			model.addAttribute("lastTime", SimpleDateFormat.getInstance().format(session.getLastAccessedTime()));
-			
-			
-			
-			Subject subject = SecurityUtils.getSubject();
-			
+			//默认记住我
+			token.setRememberMe(true);						 
+			model.addAttribute("lastTime", SimpleDateFormat.getInstance().format(session.getLastAccessedTime()));			
+			Subject subject = SecurityUtils.getSubject();			
 			//list(model);
 			Collection<Session> sessions = sessionDAO.getActiveSessions();
 
@@ -121,15 +114,14 @@ public class UserController {
 			
 			try {  
 		        subject.login(token); 
-		        msg="ok"+token.getHost();
+		        msg="登录成功！登录IP:"+token.getHost();
 		       // System.out.println(msg);  
-		        model.addAttribute("message", msg);
-		        
-		        /*if (subject.isAuthenticated()) {  
-		            return "redirect:/";  
+		        model.addAttribute("message", msg);		        
+		        if (subject.isAuthenticated()) {  
+		            return "redirect:/index";  
 		        } else {  
 		            return "login";  
-		        }  */
+		        }  
 		    } catch (IncorrectCredentialsException e) {  
 		        msg = "登录密码错误. Password for account " + token.getPrincipal() + " was incorrect.";  
 		        model.addAttribute("message", msg);  
@@ -168,9 +160,7 @@ public class UserController {
 		    	 msg = "未知错误" + e.getMessage();  
 			     model.addAttribute("message", msg);  
 			     System.out.println(msg);
-			} 
-			
-				
+			} 					
 		    return "login";  
 	}
 	
@@ -184,13 +174,25 @@ public class UserController {
 	
 	@RequestMapping(value="/getUserById",method=RequestMethod.GET)
 	public String getUserById(@RequestParam(value="userId",required=false)int id,Model model,
-			ServletRequest request,ServletResponse response) throws ServletException, IOException {
+			ServletRequest request,ServletResponse response) throws ServletException, IOException, SolrServerException {
 		User user = userService.getUser(id);
+		//User user2 =userService.solrTest(id);
 		model.addAttribute("user", user);
+		/*model.addAttribute("query", SolrUtil.query(id));
+		System.out.println(SolrUtil.query(id));*/
 		/*System.out.println(request.getCharacterEncoding()+"/"+request.getLocalName()+"/"+request.getLocalAddr()
 		+"/"+request.getLocalPort()+"/"+request.getRemoteHost()+"/"+request.getServerName());
 		request.getRequestDispatcher("login").forward(request, response);*/
 		return "login";
+	}
+	
+	
+	//@ResponseBody
+	@RequestMapping(value="/solr",method=RequestMethod.GET)
+	public String solr(@RequestParam(value="id",required=false)int id) {
+		User user2 =userService.solrTest(id);
+		System.out.println(user2);
+		return "test";
 	}
 	
 	@RequestMapping(value="/test",method=RequestMethod.GET)

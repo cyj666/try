@@ -9,4 +9,6 @@ public interface UserService {
 	public void addUser(String username,String password);
 	
 	public User findUserByUsername(String username); 
+	
+	public User solrTest(int userId);
 }
