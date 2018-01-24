@@ -33,9 +33,26 @@ public class User implements Serializable{
 	
 	private Set<Role> roleSet = new HashSet<Role>();
 	 
+	/*private Set<String> roles = new HashSet<>();
+	
+	private Set<String> permissions = new HashSet<>();
 	
 	
+	public Set<String> getPermissions() {
+		return permissions;
+	}
 	
+	public void setPermissions(Set<String> permissions) {
+		this.permissions = permissions;
+	}
+	
+	public Set<String> getRoles() {
+		return roles;
+	}
+	
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}*/
 	
 	//private enum color{};
 

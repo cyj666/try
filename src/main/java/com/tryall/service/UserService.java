@@ -1,5 +1,7 @@
 package com.tryall.service;
 
+import java.util.List;
+
 import com.tryall.pojo.User;
 
 public interface UserService {

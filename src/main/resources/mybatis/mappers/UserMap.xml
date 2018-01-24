@@ -38,8 +38,12 @@
 		select user_id,username,password,password_salt,locked,status from users where
 		username = #{username}
 	</select> -->
+	
+	<delete id="deleteUser" parameterType="int">
+        delete u,ur from users u,user_roles ur where u.user_id = ur.user_id AND u.user_id = #{id}
+    </delete>
 
-	<select id="findUserByUsername" resultMap="userMap">
+	<!-- <select id="findUserByUsernameAll" resultMap="User">
 	SELECT *
 	FROM users u 
 	LEFT JOIN user_roles ur ON u.user_id = ur.user_id 
@@ -47,6 +51,19 @@
 	LEFT JOIN roles_permissions rp ON rp.role_id = r.role_id
 	LEFT JOIN permissions p ON p.permission_id = rp.permission_id
 	WHERE u.username = #{username}
+	</select>-->
+	
+	<select id="findUserByUsername" resultType="User">
+	select user_id,username,password,status,locked from users where
+		username = #{username}
 	</select>
+	
+	<!--  SELECT username,role_name,`status`,role_desc as roles,permission_name as permissions
+	FROM users u 
+	LEFT JOIN user_roles ur ON u.user_id = ur.user_id 
+	LEFT JOIN roles r ON r.role_id = ur.role_id
+	LEFT JOIN roles_permissions rp ON rp.role_id = r.role_id
+	LEFT JOIN permissions p ON p.permission_id = rp.permission_id
+	WHERE u.username = #{username}-->
 
 </mapper>

@@ -59,6 +59,7 @@ import com.tryall.pojo.User;
 import com.tryall.realm.MyRealm;
 import com.tryall.realm.UserRealm;
 import com.tryall.service.UserService;
+import com.tryall.tool.CaptchaUtil;
 //import com.test.activeMQ.ProducerService;
 import com.tryall.tool.SolrUtil;
 
@@ -85,9 +86,14 @@ public class UserController {
         
         model.addAttribute("sessions", sessions);  
         model.addAttribute("sesessionCount", sessions.size());  
-        return "sessions/list";  
+        return "sessions/list";   
     }  
 	
+    @RequestMapping("/captcha")
+    public void CaptchaUtil(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+    	CaptchaUtil.outputCaptcha(request, response);
+    }
+    
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	public String checkLogin(@RequestParam(value="account",required=false)String username,
 			@RequestParam(value="password",required=false)String password,
@@ -104,14 +110,15 @@ public class UserController {
 			Subject subject = SecurityUtils.getSubject();			
 			//list(model);
 			Collection<Session> sessions = sessionDAO.getActiveSessions();
-
-			Iterator it = sessions.iterator();
-
-			Set<String> loginNames = new HashSet<String>();
-
-			
-			model.addAttribute("sesessionCount",(int)Math.ceil(sessions.size()/2)); 
-			
+			//Iterator it = sessions.iterator();
+			String captchaSession = (String) session.getAttribute("randomString");
+			//Set<String> loginNames = new HashSet<String>();		
+			if (!(captcha.toLowerCase().equals(captchaSession)||captcha.toUpperCase().equals(captchaSession))) {
+				msg="验证码错误！";
+				model.addAttribute("message", msg);	
+				return "login";
+			}
+			model.addAttribute("sesessionCount",(int)Math.ceil(sessions.size()/2)); 			
 			try {  
 		        subject.login(token); 
 		        msg="登录成功！登录IP:"+token.getHost();
@@ -183,9 +190,23 @@ public class UserController {
 		/*System.out.println(request.getCharacterEncoding()+"/"+request.getLocalName()+"/"+request.getLocalAddr()
 		+"/"+request.getLocalPort()+"/"+request.getRemoteHost()+"/"+request.getServerName());
 		request.getRequestDispatcher("login").forward(request, response);*/
-		return "login";
+		return "index";
 	}
 	
+	
+	@RequestMapping(value="/getUserByName",method=RequestMethod.GET)
+	public String getUserByName(@RequestParam(value="username",required=false)String username,Model model,
+			ServletRequest request,ServletResponse response) throws ServletException, IOException, SolrServerException {
+		User user = userService.findUserByUsername(username);
+		//User user2 =userService.solrTest(id);
+		model.addAttribute("user2", user);
+		/*model.addAttribute("query", SolrUtil.query(id));
+		System.out.println(SolrUtil.query(id));*/
+		/*System.out.println(request.getCharacterEncoding()+"/"+request.getLocalName()+"/"+request.getLocalAddr()
+		+"/"+request.getLocalPort()+"/"+request.getRemoteHost()+"/"+request.getServerName());
+		request.getRequestDispatcher("login").forward(request, response);*/
+		return "index";
+	}
 	
 	//@ResponseBody
 	@RequestMapping(value="/solr",method=RequestMethod.GET)

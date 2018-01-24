@@ -56,12 +56,14 @@
                             <input id="password" type="password" name="password" placeholder="密码" tabindex="2" class="form-control input-medium" required>
                         </div>
                     </div>
-                  <!--  <div class="control-group hidden">
+                   <div class="control-group">
                         <div class="controls">
-                            <label for="captcha" class="control-label fa fa-lock" hidden></label>
-                            <input id="captcha" type="text" name="captcha" placeholder="验证码" tabindex="2" class="form-control input-medium">
+                            <label for="captcha" class="control-label fa fa-key"></label>
+                            <input style="width: 150;display:inline-block" id="captcha" type="text" name="captcha" placeholder="验证码" tabindex="2" class="form-control input-medium">
+                            <img id="captchaImage" src="/captcha" />
+                            <i class="control-label fa fa-refresh" style="margin-left:3px;"></i>
                         </div>
-                    </div>-->
+                    </div>
                 </div>
                 <div class="form-actions">
                 <a href="#" tabindex="5" class="btn pull-left btn-link text-muted">忘记密码?</a>
@@ -85,7 +87,12 @@ $(function() {
 });
 $('#captchaImage').click(function() 
 		{
-		  $('#captchaImage').attr("src", "captcha.form?timestamp=" + (new Date()).valueOf());
+		  $('#captchaImage').attr("src", "captcha?timestamp=" + (new Date()).valueOf());
+		  
+		});
+$('.fa-refresh').click(function() 
+		{
+		  $('#captchaImage').attr("src", "captcha?timestamp=" + (new Date()).valueOf());
 		  
 		});
 $(function(){

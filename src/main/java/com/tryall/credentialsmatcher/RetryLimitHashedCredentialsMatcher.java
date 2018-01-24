@@ -28,6 +28,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
     public RetryLimitHashedCredentialsMatcher() {
 		// TODO Auto-generated constructor stub
 	}
+    
    /* public void setCacheManager(CacheManager cacheManager) {
 		this.cacheManager = cacheManager;
 	}*/
